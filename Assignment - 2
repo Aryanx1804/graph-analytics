@@ -1,0 +1,46 @@
+
+from collections import deque
+
+def quickestWayUp(ladders, snakes):
+    board = list(range(101))
+
+    for a, b in ladders:
+        board[a] = b
+
+    for a, b in snakes:
+        board[a] = b
+
+    queue = deque([(1, 0)])
+    visited = {1}
+
+    while queue:
+        pos, moves = queue.popleft()
+
+        if pos == 100:
+            return moves
+
+        for dice in range(1, 7):
+            nxt = pos + dice
+
+            if nxt > 100:
+                continue
+
+            nxt = board[nxt]
+
+            if nxt not in visited:
+                visited.add(nxt)
+                queue.append((nxt, moves + 1))
+
+    return -1
+
+
+t = int(input())
+
+for _ in range(t):
+    n = int(input())
+    ladders = [list(map(int, input().split())) for _ in range(n)]
+
+    m = int(input())
+    snakes = [list(map(int, input().split())) for _ in range(m)]
+
+    print(quickestWayUp(ladders, snakes))
